@@ -1,7 +1,13 @@
+@font-face {
+  font-family: 'Pokemon Classic';
+  src: url('assets/pokemon_classic.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Pokemon Classic';
 }
 
 body {
