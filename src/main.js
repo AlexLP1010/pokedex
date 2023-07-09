@@ -44,10 +44,22 @@ function selectPokemon(url) {
       pokemon.types.forEach(t => {
         const newType = document.createElement('span')
         newType.innerText = t.type.name
-        newType.style = `background-color: ${pokeTypeColors[t.type.name]}; margin-left: 1em;`
+        newType.classList.add('pokemon-type')
+        newType.style = `background-color: ${pokeTypeColors[t.type.name]};`
         pokeTypes.appendChild(newType)
       })
     })
+}
+
+/**
+ * Add zeros to the id until it has 4 digits
+ * @param {string} id Id of pokemon
+ * @returns {string} Id normalized whit 4 digits
+ */
+function normalizeId(id) {
+  if(id.length < 4)
+    return normalizeId('0' + id)
+  return id
 }
 
 function getPokemonList() {
@@ -69,7 +81,7 @@ function getPokemonList() {
           newPokemon.classList.add('pokemon-button')
           const regex = /(?<!v)\d+/gm
           const id = regex.exec(pokemon.url)
-          newPokemon.innerText = `${id} ${pokemon.name}`
+          newPokemon.innerText = `${normalizeId(id)} ${pokemon.name}`
           newPokemon.addEventListener('click', () => {
             selectPokemon(pokemon.url)
           })
@@ -90,6 +102,7 @@ function getPokemonList() {
 const pokemonList = getPokemonList()
 
 const observer = new IntersectionObserver(handleRequestList)
+
 /**
  * 
  * @param {IntersectionObserverEntry[]} entries 
