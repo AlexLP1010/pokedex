@@ -5,6 +5,10 @@ const pokemonId = document.getElementById('pokemonId')
 const pokeName = document.getElementById('pokeName')
 const pokeTypes = document.getElementById('pokeTypes')
 const loadingElement = document.getElementById('loadingElement')
+const details = document.getElementById('details')
+const list = document.getElementById('list')
+const stats = document.getElementById('stats')
+const btnBack = document.getElementById('btnBack')
 
 const pokeTypeColors = {
   normal: '#4f5255',
@@ -29,16 +33,33 @@ const pokeTypeColors = {
   shadow: '#2d2726'
 }
 
+let selectedPokemon = undefined
+
+function toggleDetails() {
+  details.classList.toggle('hide')
+  list.classList.toggle('hide')
+  stats.innerHTML = ''
+  selectedPokemon.stats.map(stat => {
+    const statElement = document.createElement('p')
+    statElement.innerText = `${stat.stat.name}: ${stat.base_stat}`
+    stats.appendChild(statElement)
+  })
+}
+
 /**
  * 
  * @param {string} url 
  */
-function selectPokemon(url) {
+function selectPokemon(url, pokemonId) {
+  if (selectedPokemon && pokemonId === selectedPokemon.id.toString())
+    toggleDetails()
+
   fetch(url)
     .then(res => res.json())
     .then(pokemon => {
+      selectedPokemon = pokemon
       pokeImage.setAttribute('src', pokemon.sprites.front_default)
-      pokemonId.innerText = pokemon.id
+      this.pokemonId.innerText = pokemon.id
       pokeName.innerText = pokemon.name
       pokeTypes.innerHTML = ''
       pokemon.types.forEach(t => {
@@ -83,7 +104,7 @@ function getPokemonList() {
           const id = regex.exec(pokemon.url)
           newPokemon.innerText = `${normalizeId(id)} ${pokemon.name}`
           newPokemon.addEventListener('click', () => {
-            selectPokemon(pokemon.url)
+            selectPokemon(pokemon.url, id[0])
           })
           pokeList.appendChild(newPokemon)
         })
@@ -112,5 +133,7 @@ function handleRequestList(entries) {
   if (entry.isIntersecting)
     pokemonList()
 }
+
+btnBack.addEventListener('click', toggleDetails)
 
 observer.observe(loadingElement)

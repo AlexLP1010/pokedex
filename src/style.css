@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Pokemon Classic';
   src: url('assets/pokemon_classic.ttf');
+  font-display: block;
 }
 
 * {
@@ -35,11 +36,13 @@ main {
 
 .pokemon-card {
   grid-row: 2 / 3;
+  padding: 0 1em;
 }
 
-.pokemon-list {
-  overflow-y: scroll;
+.pokemon-details {
   grid-row: 3 / 6;
+  overflow-y: scroll;
+  padding: 0 0.5em;
 }
 
 .pokemon-list>div#pokeList {
@@ -88,4 +91,8 @@ main {
   text-align: left;
   background: #efe4b5;
   height: 3em;
+}
+
+.hide {
+  display: none;
 }

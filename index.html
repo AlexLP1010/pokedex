@@ -17,9 +17,19 @@
       <p>Id: <span id="pokemonId">??</span></p>
       <p>Type: <span id="pokeTypes">??</span></p>
     </div>
-    <div class="pokemon-list">
-      <div id="pokeList"></div>
-      <div id="loadingElement">Loading ...</div>
+    <div class="pokemon-details">
+      <div id="details" class="details hide">
+        <button type="button" id="btnBack">back</button>
+        <div>
+          <p>Weight: <span id="pokeWeight"></span></p>
+          <p>Height: <span id="pokeHeight"></span></p>
+        </div>
+        <div id="stats"></div>
+      </div>
+      <div id="list" class="pokemon-list">
+        <div id="pokeList"></div>
+        <div id="loadingElement">Loading ...</div>
+      </div>
     </div>
   </main>
 </body>
