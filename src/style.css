@@ -95,4 +95,22 @@ main {
 
 .hide {
   display: none;
+  height: 0;
+  position: absolute;
+}
+
+.btn {
+  background-color: #d0b15d;
+  padding: 0 0.5em 0 0.5em;
+  color: #252525;
+  border: 2px solid;
+  border-top-color: #d0d0d0;
+  border-left-color: #d0d0d0;
+  border-bottom-color: #636363;
+  border-right-color: #636363;
+  text-shadow: 1px 1px #3a3a3a;
+}
+
+.loading {
+  opacity: 0.5;
 }

@@ -9,6 +9,9 @@ const details = document.getElementById('details')
 const list = document.getElementById('list')
 const stats = document.getElementById('stats')
 const btnBack = document.getElementById('btnBack')
+const pokeWeight = document.getElementById('pokeWeight')
+const pokeHeight = document.getElementById('pokeHeight')
+const selecctedPokemon = document.getElementById('selecctedPokemon')
 
 const pokeTypeColors = {
   normal: '#4f5255',
@@ -38,6 +41,8 @@ let selectedPokemon = undefined
 function toggleDetails() {
   details.classList.toggle('hide')
   list.classList.toggle('hide')
+  pokeHeight.innerText = selectedPokemon.height
+  pokeWeight.innerText = selectedPokemon.weight
   stats.innerHTML = ''
   selectedPokemon.stats.map(stat => {
     const statElement = document.createElement('p')
@@ -51,24 +56,18 @@ function toggleDetails() {
  * @param {string} url 
  */
 function selectPokemon(url, pokemonId) {
-  if (selectedPokemon && pokemonId === selectedPokemon.id.toString())
+  if (selectedPokemon && pokemonId === selectedPokemon.id.toString()){
     toggleDetails()
+    return
+  }
+
+  selecctedPokemon.classList.add('loading')
 
   fetch(url)
     .then(res => res.json())
     .then(pokemon => {
       selectedPokemon = pokemon
       pokeImage.setAttribute('src', pokemon.sprites.front_default)
-      this.pokemonId.innerText = pokemon.id
-      pokeName.innerText = pokemon.name
-      pokeTypes.innerHTML = ''
-      pokemon.types.forEach(t => {
-        const newType = document.createElement('span')
-        newType.innerText = t.type.name
-        newType.classList.add('pokemon-type')
-        newType.style = `background-color: ${pokeTypeColors[t.type.name]};`
-        pokeTypes.appendChild(newType)
-      })
     })
 }
 
@@ -101,10 +100,10 @@ function getPokemonList() {
           newPokemon.type = 'button'
           newPokemon.classList.add('pokemon-button')
           const regex = /(?<!v)\d+/gm
-          const id = regex.exec(pokemon.url)
+          const id = regex.exec(pokemon.url)[0]
           newPokemon.innerText = `${normalizeId(id)} ${pokemon.name}`
           newPokemon.addEventListener('click', () => {
-            selectPokemon(pokemon.url, id[0])
+            selectPokemon(pokemon.url, id)
           })
           pokeList.appendChild(newPokemon)
         })
@@ -134,6 +133,25 @@ function handleRequestList(entries) {
     pokemonList()
 }
 
+function handleLoadingImg() {
+  if (!selectedPokemon)
+    return
+  
+  selecctedPokemon.classList.remove('loading')
+  pokemonId.innerText = selectedPokemon.id
+  pokeName.innerText = selectedPokemon.name
+  pokeTypes.innerHTML = ''
+  selectedPokemon.types.forEach(t => {
+    const newType = document.createElement('span')
+    newType.innerText = t.type.name
+    newType.classList.add('pokemon-type')
+    newType.style = `background-color: ${pokeTypeColors[t.type.name]};`
+    pokeTypes.appendChild(newType)
+  })
+}
+
 btnBack.addEventListener('click', toggleDetails)
+
+pokeImage.addEventListener('load', handleLoadingImg)
 
 observer.observe(loadingElement)
